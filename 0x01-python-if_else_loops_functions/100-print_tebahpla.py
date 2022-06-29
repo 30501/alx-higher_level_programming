@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-for c in range(122, 96, -1):
-    if (c % 2 != 0):
-        c -= 32
-    print("{}".format(chr(c)), end="")
+for letter in range(122, 96, -1):
+    if letter % 2 == 1:
+        letter = letter - 32
+    print("{}".format(chr(letter)), end='')
