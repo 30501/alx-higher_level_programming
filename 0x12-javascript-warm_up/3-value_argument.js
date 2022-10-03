@@ -6,4 +6,3 @@ if (!arg[0]) {
 } else {
   console.log(arg[0]);
 }
-Footer
