@@ -1,22 +1,31 @@
 #!/usr/bin/python3
-# script that takes in an argument and displays all values in the states
-# table of hbtn_0e_0_usa where name matches the argument
-import MySQLdb
-from sys import argv
+"""
+Displays all values in the states table of
+hbtn_0e_0_usa where name matches the argument.
+"""
 
+if __name__ == '__main__':
+    from sys import argv
+    import MySQLdb as mysql
 
-if __name__ == "__main__":
-    conn = MySQLdb.connect(host="localhost", user=argv[1], passwd=argv[2],
-                           db=argv[3], port=3306)
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM states WHERE name = '{:s}' \
-                 COLLATE latin1_general_cs ORDER BY id ASC".format(argv[4]))
+    try:
+        db = mysql.connect(host='localhost', port=3306, user=argv[1],
+                           passwd=argv[2], db=argv[3])
+    except Exception:
+        print('Failed to connect to the database')
+        exit(0)
 
-    query_rows = cur.fetchall()
+    searched = argv[4]
 
-    for row in query_rows:
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM states WHERE name = BINARY '{:s}' \
+                    ORDER BY id ASC;".format(searched))
+
+    result_query = cursor.fetchall()
+
+    for row in result_query:
         print(row)
-    # Close all cursors
-    cur.close()
-    # Close all databases
-    conn.close()
+
+    cursor.close()
+    db.close()
